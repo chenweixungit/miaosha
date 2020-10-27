@@ -11,9 +11,10 @@ spring:
     username: root
     password: 123456
 
-#  redis:
-#    host: 116.62.144.88
-#    port: 6379
-#    password:
-#    timeout: 30000
+  redis:
+    host: 116.62.144.88
+    port: 6379
+    password:
+    timeout: 30000
+
 

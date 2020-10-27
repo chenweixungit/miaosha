@@ -6,6 +6,8 @@ import com.miaoshaproject.error.EnumBusinessError;
 import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
+import com.miaoshaproject.utils.MD5;
+import com.miaoshaproject.utils.RedisUtil;
 import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class UserController extends BaseController{
     @Autowired
     private HttpServletRequest httpServletRequest;
 
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 用户注册
@@ -44,10 +48,10 @@ public class UserController extends BaseController{
     @RequestParam(name="telephone")String telephone,
     @RequestParam(name="optCode")String optCode,
     @RequestParam(name="name") String name ,
-    @RequestParam(name="gender") String gender,
+    @RequestParam(name="gender") Byte gender,
     @RequestParam(name="age") Integer age,
     @RequestParam(name="password") String password) throws BussinessException{
-        String sessionCode = (String)httpServletRequest.getSession().getAttribute(telephone);
+        String sessionCode = String.valueOf(redisUtil.get(telephone));
         // 判断校验码是否正确
         if(!com.alibaba.druid.util.StringUtils.equals(optCode,sessionCode)){
             throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
@@ -55,15 +59,9 @@ public class UserController extends BaseController{
         // 把数据插入数据库
         UserModel userModel = new UserModel();
         userModel.setName(name);
-        userModel.setEncrypedPassword(MD5Encoder.encode(password.getBytes()));
+        userModel.setEncrypedPassword(MD5.MD5Encode(password));
         userModel.setAge(age);
-        Byte gen;
-        if(com.alibaba.druid.util.StringUtils.equals(gender,"男")){
-            gen = new Byte(String.valueOf(1));
-        }else{
-            gen = new Byte(String.valueOf(0));
-        }
-        userModel.setGender(gen);
+        userModel.setGender(gender);
         userModel.setTelephone(telephone);
         userService.register(userModel);
         return CommonReturnType.create(null);
@@ -110,14 +108,12 @@ public class UserController extends BaseController{
         Random random = new Random();
         int randomInt = random.nextInt(99999);
         randomInt += 100000;
-
+        redisUtil.set(telephone,randomInt);
         // 这里方便使用，使用了httpsession来存储电话和验证码
         // 正常的分布式系统中，采用redis来存储的验证码，redis本身存储键值对格式的数据，同时redis自带过期处理，
         httpServletRequest.getSession().setAttribute(telephone,randomInt);
         System.out.println("telephone: "+ telephone + " 验证码" + randomInt);
         return CommonReturnType.create(null);
     }
-
-
 
 }

@@ -24,6 +24,11 @@ public class UserServiceIml implements UserService {
     @Autowired
     private UserPasswordDOMapper userPasswordDOMapper;
 
+    /**
+     * 通过id查询用户
+     * @param id
+     * @return
+     */
     @Override
     public UserModel getUserById(Integer id) {
 
@@ -37,6 +42,11 @@ public class UserServiceIml implements UserService {
         return convertFromObject(userDO,userPasswordDO);
     }
 
+    /**
+     * 用户注册
+     * @param userModel
+     * @throws BussinessException
+     */
     @Override
     @Transactional
     public void register(UserModel userModel) throws BussinessException {
@@ -56,9 +66,20 @@ public class UserServiceIml implements UserService {
         UserDO userDO = convertUserDOFromObject(userModel);
         UserPasswordDO userPasswordDO= convertUserPasswordDOFromObject(userModel);
         userDOMapper.insertSelective(userDO);
+        UserDO newUserDO = userDOMapper.selectByTelephone(userDO.getTelephone());
+        userPasswordDO.setUserId(newUserDO.getId());
+        userPasswordDO.setEncryedPassword(userModel.getEncrypedPassword());
         userPasswordDOMapper.insertSelective(userPasswordDO);
+        System.out.println(userModel.getEncrypedPassword());
+        System.out.println("-----");
+        System.out.println(userPasswordDO.getEncryedPassword());
     }
 
+    /**
+     * userModel转userDO
+     * @param userModel
+     * @return
+     */
     public UserPasswordDO convertUserPasswordDOFromObject(UserModel userModel){
         UserPasswordDO userPasswordDO = new UserPasswordDO();
         BeanUtils.copyProperties(userModel,userPasswordDO);

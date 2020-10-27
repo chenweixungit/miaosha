@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
-//@Controller
+
 public class BaseController {
     public static final String CONTENT_FORMAT_TYPE = "application/x-www-form-urlencoded";
 
