@@ -1,5 +1,6 @@
 package com.miaoshaproject.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.miaoshaproject.controller.viewObjects.UserVO;
 import com.miaoshaproject.error.BussinessException;
 import com.miaoshaproject.error.EnumBusinessError;
@@ -8,7 +9,6 @@ import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
 import com.miaoshaproject.utils.MD5;
 import com.miaoshaproject.utils.RedisUtil;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +30,28 @@ public class UserController extends BaseController{
 
     @Autowired
     private RedisUtil redisUtil;
+
+    /**
+     * 用户登录
+     * @param telephone
+     * @param password
+     * @return
+     */
+    @RequestMapping(value = "/login",method = {RequestMethod.POST},consumes = {CONTENT_FORMAT_TYPE})
+    @ResponseBody
+    public CommonReturnType uerLogin(
+    @RequestParam(name = "telephone") String telephone,
+    @RequestParam(name = "password") String password) throws BussinessException{
+        if(StringUtils.isEmpty(telephone) || StringUtils.isEmpty(password)){
+            throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+        String encrypedPassword = MD5.MD5Encode(password);
+        UserModel userModel = userService.validateLogin(telephone,encrypedPassword);
+        httpServletRequest.getSession().setAttribute("userModel",userModel);
+        return CommonReturnType.create(null);
+    }
+
+
 
     /**
      * 用户注册

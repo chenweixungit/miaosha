@@ -70,9 +70,29 @@ public class UserServiceIml implements UserService {
         userPasswordDO.setUserId(newUserDO.getId());
         userPasswordDO.setEncryedPassword(userModel.getEncrypedPassword());
         userPasswordDOMapper.insertSelective(userPasswordDO);
-        System.out.println(userModel.getEncrypedPassword());
-        System.out.println("-----");
-        System.out.println(userPasswordDO.getEncryedPassword());
+
+    }
+
+    /**
+     * 验证登录
+     * @param telephone
+     * @param encrypedPassword
+     * @return
+     */
+    @Override
+    @Transactional
+    public UserModel validateLogin(String telephone, String encrypedPassword) throws BussinessException{
+        // 用电话号码查询用户id
+        UserDO userDO = userDOMapper.selectByTelephone(telephone);
+        if(userDO == null){
+            throw new BussinessException(EnumBusinessError.FAIL_LOGIN);
+        }
+        // 使用用户id查询密码
+        UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByUserId(userDO.getId());
+        if(!com.alibaba.druid.util.StringUtils.equals(userPasswordDO.getEncryedPassword(),encrypedPassword)){
+            throw new BussinessException(EnumBusinessError.FAIL_LOGIN);
+        }
+        return convertFromObject(userDO,userPasswordDO);
     }
 
     /**
