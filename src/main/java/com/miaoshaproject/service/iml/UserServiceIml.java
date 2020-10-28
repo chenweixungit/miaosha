@@ -9,6 +9,8 @@ import com.miaoshaproject.error.BussinessException;
 import com.miaoshaproject.error.EnumBusinessError;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
+import com.miaoshaproject.validator.ValidationResult;
+import com.miaoshaproject.validator.ValidatorImpl;
 import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class UserServiceIml implements UserService {
     @Autowired
     private UserPasswordDOMapper userPasswordDOMapper;
 
+    @Autowired
+    private ValidatorImpl validator;
     /**
      * 通过id查询用户
      * @param id
@@ -55,12 +59,17 @@ public class UserServiceIml implements UserService {
             throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
         }
 
-        // 判断各个属性是否为空
-        if(StringUtils.isEmptyOrWhitespaceOnly(userModel.getName()) ||
-            StringUtils.isEmptyOrWhitespaceOnly(userModel.getTelephone() )||
-            userModel.getGender() == null || userModel.getAge() == null){
-            throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
+        ValidationResult result = validator.validate(userModel);
+        if(result.isHasError()){
+            throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR,
+                    result.getErrMsg());
         }
+//        // 判断各个属性是否为空
+//        if(StringUtils.isEmptyOrWhitespaceOnly(userModel.getName()) ||
+//            StringUtils.isEmptyOrWhitespaceOnly(userModel.getTelephone() )||
+//            userModel.getGender() == null || userModel.getAge() == null){
+//            throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
+//        }
 
         // 将数据写入数据库
         UserDO userDO = convertUserDOFromObject(userModel);
