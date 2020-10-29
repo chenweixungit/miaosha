@@ -46,19 +46,13 @@
 <!--               enableSelectByExample="false"-->
 <!--               selectByExampleQueryId="false">-->
 <!--        </table>-->
-        <table tableName="item" domainObjectName="ItemDO"
+        <table tableName="sequence_info" domainObjectName="SequenceDO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table>
-        <table tableName="item_stock" domainObjectName="ItemStockDO"
-               enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableUpdateByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false">
-        </table>
+
     </context>
 </generatorConfiguration>

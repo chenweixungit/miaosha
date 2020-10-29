@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -77,12 +78,27 @@ public class ItemServiceImpl implements ItemService {
         BeanUtils.copyProperties(itemStockDO,itemModel);
         return itemModel;
     }
+
+    @Override
+    @Transactional
+    public boolean decreaseStock(Integer itemId, Integer amount) throws BussinessException {
+        int affectedRow = itemStockDOMapper.decreaseStock(itemId,amount);
+        if(affectedRow > 0){
+            return  true;
+        }
+        return false;
+    }
+
     @Override
     @Transactional
     public List<ItemModel> listItem() {
-
-
-        return null;
+        List<ItemDO> itemDOList = itemDOMapper.listItem();
+        List<ItemModel> itemModelList = itemDOList.stream().map(itemDO -> {
+            ItemStockDO itemStockDO = itemStockDOMapper.selectByItemId(itemDO.getId());
+            ItemModel itemModel = convertFromDO(itemDO,itemStockDO);
+            return itemModel;
+        }).collect(Collectors.toList());
+        return itemModelList;
     }
 
     /**

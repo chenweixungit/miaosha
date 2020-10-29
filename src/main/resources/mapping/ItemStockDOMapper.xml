@@ -71,9 +71,15 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.miaoshaproject.dataObjects.ItemStockDO">
-    update item_stock
-    set stock = #{stock,jdbcType=INTEGER},
-      item_id = #{itemId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+   update item_stock
+  set stock = #{stock,jdbcType=INTEGER},
+  item_id = #{itemId,jdbcType=INTEGER}
+  where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="decreaseStock" >
+     update item_stock
+    set stock = stock - #{amount}
+    where item_id = #{itemId} and stock >= #{amount}
   </update>
 </mapper>

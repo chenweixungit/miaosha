@@ -18,4 +18,6 @@ public interface ItemStockDOMapper {
     int updateByPrimaryKeySelective(ItemStockDO record);
 
     int updateByPrimaryKey(ItemStockDO record);
+
+    int decreaseStock(Integer itemId,Integer amount);
 }
