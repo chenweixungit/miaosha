@@ -31,15 +31,29 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 生成对应表及类名 -->
-        <table tableName="user_info" domainObjectName="UserDO"
+<!--        <table tableName="user_info" domainObjectName="UserDO"-->
+<!--               enableCountByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--        >-->
+<!--        </table>-->
+<!--        <table tableName="user_password" domainObjectName="UserPasswordDO"-->
+<!--               enableCountByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--        </table>-->
+        <table tableName="item" domainObjectName="ItemDO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"
                enableSelectByExample="false"
-               selectByExampleQueryId="false"
-        >
+               selectByExampleQueryId="false">
         </table>
-        <table tableName="user_password" domainObjectName="UserPasswordDO"
+        <table tableName="item_stock" domainObjectName="ItemStockDO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

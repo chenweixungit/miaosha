@@ -64,10 +64,10 @@
       <version>2.0.5.RELEASE</version>
     </dependency>
 
-    <dependency>
-      <groupId>redis.clients</groupId>
-      <artifactId>jedis</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>redis.clients</groupId>-->
+<!--      <artifactId>jedis</artifactId>-->
+<!--    </dependency>-->
 
     <!--验证器    -->
     <dependency>
@@ -165,7 +165,7 @@
           </executions>
           <configuration>
             <verbose>true</verbose>
-            <overwrite>true</overwrite>
+            <overwrite>false</overwrite>
             <configurationFile>
               src/main/resources/mybatis-generator.xml
             </configurationFile>

@@ -11,7 +11,6 @@ import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
 import com.miaoshaproject.validator.ValidationResult;
 import com.miaoshaproject.validator.ValidatorImpl;
-import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -64,12 +63,6 @@ public class UserServiceIml implements UserService {
             throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR,
                     result.getErrMsg());
         }
-//        // 判断各个属性是否为空
-//        if(StringUtils.isEmptyOrWhitespaceOnly(userModel.getName()) ||
-//            StringUtils.isEmptyOrWhitespaceOnly(userModel.getTelephone() )||
-//            userModel.getGender() == null || userModel.getAge() == null){
-//            throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
-//        }
 
         // 将数据写入数据库
         UserDO userDO = convertUserDOFromObject(userModel);
