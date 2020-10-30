@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @SpringBootApplication(scanBasePackages = "com.miaoshaproject")
 @MapperScan(basePackages = {"com.miaoshaproject.dao"})
-@RestController
 public class App
 {
 

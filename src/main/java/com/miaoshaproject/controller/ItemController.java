@@ -21,6 +21,17 @@ import java.util.stream.Collectors;
 public class ItemController extends BaseController {
     @Autowired
     private ItemService itemService;
+
+    /**
+     * 创建商品信息
+     * @param title
+     * @param price
+     * @param description
+     * @param stock
+     * @param imgUrl
+     * @return
+     * @throws BussinessException
+     */
     @ResponseBody
     @RequestMapping(value = "/create",method = {RequestMethod.POST}, consumes = {CONTENT_FORMAT_TYPE})
     public CommonReturnType addItem(@RequestParam(name = "title")String title,
@@ -42,6 +53,14 @@ public class ItemController extends BaseController {
     private ItemVO convertModel(ItemModel itemModel){
         ItemVO itemVO = new ItemVO();
         BeanUtils.copyProperties(itemModel,itemVO);
+        if(itemModel.getPromoModel() != null){
+            itemVO.setPromoStatus(itemModel.getPromoModel().getStatus());
+            itemVO.setPromoPrice(itemModel.getPromoModel().getPromoItemPrice());
+            itemVO.setPromoId(itemModel.getPromoModel().getId());
+            itemVO.setStartDate(itemModel.getPromoModel().getStartDate());
+        }else{
+            itemVO.setPromoStatus(0);
+        }
         return itemVO;
     }
     @ResponseBody

@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer itemId, Integer amount) throws BussinessException{
+    public OrderModel createOrder(Integer userId, Integer itemId, Integer promoId, Integer amount) throws BussinessException{
         // 判断校验信息
         UserModel userModel = userService.getUserById(userId);
         if(userModel == null){
@@ -66,16 +66,30 @@ public class OrderServiceImpl implements OrderService {
         if(!result){
             throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR,"库存不足");
         }
+        // 判断互动是否正在进行中
+        if(promoId != null){
+            if(promoId.intValue() != itemModel.getPromoModel().getId()){
+                throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR,"活动信息不存在");
+            }else if(itemModel.getPromoModel().getStatus().intValue() != 2){
+                throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR,"活动还未开始");
+            }
+        }
         // 订单入库
         OrderModel orderModel = new OrderModel();
         orderModel.setUserId(userId);
         orderModel.setAmount(amount);
         orderModel.setItemId(itemId);
-        orderModel.setOrderPrice(itemModel.getPrice());
-        orderModel.setOrderAmount(itemModel.getPrice().multiply(new BigDecimal(amount)));
+        if(promoId != null){
+            orderModel.setOrderPrice(itemModel.getPromoModel().getPromoItemPrice());
+        }else{
+            orderModel.setOrderPrice(itemModel.getPrice());
+        }
+        orderModel.setOrderAmount(orderModel.getOrderPrice().multiply(new BigDecimal(amount)));
         // 生成交易流水号
         OrderDO orderDO = convertFromModel(orderModel);
         orderDOMapper.insertSelective(orderDO);
+        // 加上商品销量
+        itemService.increaseSales(itemId,amount);
         return orderModel;
     }
 

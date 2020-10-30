@@ -15,6 +15,16 @@ public class OrderModel {
     private Integer amount;
     // 购买金额
     private BigDecimal orderAmount;
+    // 秒杀id，如果不为空，则表示该商品在秒杀活动中
+    private Integer promoId;
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
+    }
 
     public String getId() {
         return id;

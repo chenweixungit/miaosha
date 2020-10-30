@@ -1,6 +1,8 @@
 package com.miaoshaproject.controller.viewObjects;
 
 
+import org.joda.time.DateTime;
+
 import java.math.BigDecimal;
 
 public class ItemVO {
@@ -23,6 +25,46 @@ public class ItemVO {
 
     // 商品图片Url
     private String imgUrl;
+
+    private Integer promoStatus;
+
+    private BigDecimal promoPrice;
+
+    private Integer promoId;
+
+    private DateTime startDate;
+
+    public Integer getPromoStatus() {
+        return promoStatus;
+    }
+
+    public void setPromoStatus(Integer promoStatus) {
+        this.promoStatus = promoStatus;
+    }
+
+    public BigDecimal getPromoPrice() {
+        return promoPrice;
+    }
+
+    public void setPromoPrice(BigDecimal promoPrice) {
+        this.promoPrice = promoPrice;
+    }
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
+    }
+
+    public DateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(DateTime startDate) {
+        this.startDate = startDate;
+    }
 
     public Integer getId() {
         return id;

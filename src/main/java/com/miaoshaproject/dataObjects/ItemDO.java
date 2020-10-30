@@ -1,5 +1,6 @@
 package com.miaoshaproject.dataObjects;
 
+
 import java.math.BigDecimal;
 
 public class ItemDO {
@@ -14,6 +15,7 @@ public class ItemDO {
     private Integer sales;
 
     private String imgUrl;
+
 
     public Integer getId() {
         return id;

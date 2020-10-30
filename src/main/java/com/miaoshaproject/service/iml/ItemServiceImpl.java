@@ -2,12 +2,15 @@ package com.miaoshaproject.service.iml;
 
 import com.miaoshaproject.dao.ItemDOMapper;
 import com.miaoshaproject.dao.ItemStockDOMapper;
+import com.miaoshaproject.dao.PromoDOMapper;
 import com.miaoshaproject.dataObjects.ItemDO;
 import com.miaoshaproject.dataObjects.ItemStockDO;
 import com.miaoshaproject.error.BussinessException;
 import com.miaoshaproject.error.EnumBusinessError;
 import com.miaoshaproject.service.ItemService;
+import com.miaoshaproject.service.PromoService;
 import com.miaoshaproject.service.model.ItemModel;
+import com.miaoshaproject.service.model.PromoModel;
 import com.miaoshaproject.validator.ValidationResult;
 import com.miaoshaproject.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +33,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ValidatorImpl validator ;
+
+    @Autowired
+    private PromoService promoService;
     /**
      * 创建商品
      * @param itemModel
@@ -116,6 +122,16 @@ public class ItemServiceImpl implements ItemService {
         if(itemModel == null){
             throw new BussinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
         }
+        PromoModel promoModel = promoService.getPromoByItemId(itemModel.getId());
+        if(promoModel != null && promoModel.getStatus() != 3){
+            itemModel.setPromoModel(promoModel);
+        }
         return itemModel;
+    }
+
+    @Override
+    @Transactional
+    public void increaseSales(Integer itemId, Integer amount) throws BussinessException {
+        itemDOMapper.increaseSales(itemId,amount);
     }
 }

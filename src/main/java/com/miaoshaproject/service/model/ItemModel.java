@@ -23,6 +23,16 @@ public class ItemModel {
     @NotNull(message = "商品图片不能为空")
     // 商品图片Url
     private String imgUrl;
+    // 如果promoModel不为空，则说明其即将有秒杀互动，或正在有秒杀活动
+    private PromoModel promoModel;
+
+    public PromoModel getPromoModel() {
+        return promoModel;
+    }
+
+    public void setPromoModel(PromoModel promoModel) {
+        this.promoModel = promoModel;
+    }
 
     public Integer getId() {
         return id;

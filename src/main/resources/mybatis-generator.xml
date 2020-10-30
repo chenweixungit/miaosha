@@ -30,23 +30,8 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.miaoshaproject.dao" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-        <!-- 生成对应表及类名 -->
-<!--        <table tableName="user_info" domainObjectName="UserDO"-->
-<!--               enableCountByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"-->
-<!--        >-->
-<!--        </table>-->
-<!--        <table tableName="user_password" domainObjectName="UserPasswordDO"-->
-<!--               enableCountByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false">-->
-<!--        </table>-->
-        <table tableName="sequence_info" domainObjectName="SequenceDO"
+
+        <table tableName="promo" domainObjectName="PromoDO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"
